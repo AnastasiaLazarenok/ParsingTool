@@ -11,7 +11,7 @@ class Parsing
   end
 
   class Parsing::ParsePage
-
+    ACCESS_TOKEN = 'EAAbvUIDYcagBAAZAMOXtX7zD4Jcs4wGohZAtGOvRu4W4nMa1o4vmiZBWZCpgZBbqBZCHVYfYtO0wPC9eMEEoZCk1Vs36tjZAHQ7phVR9ZARMTToREmsAEdZBq92xvM4AntS2SwGZAFrSk17h6lZBVGbt3ZAIZBaL1HIrkpACdHZAiqfIsly2UoDaRZBZCcpBl'
     def initialize(url)
       @url = url
     end
@@ -39,12 +39,16 @@ class Parsing
     end
 
     def open_fasebook_page(url)
-      @news = []
-      html = open(@url)
-      page = Nokogiri::HTML(html)      
-      page.css("div._5pbx.userContent").map do |x|
-        @news << x.at_css("p").text
-      end
-    end
+      @graph = Koala::Facebook::API.new(ACCESS_TOKEN)
+      words = ['https://www.facebook.com/','/']
+      re = Regexp.union(words)
+      aa = url.gsub(re, "")
+      
+      @graph.get_object(aa)
+      p @graph.get_connection(aa, 'posts', {
+        limit: 100,
+        fields: ['message']
+      })   
+    end  
   end
 end
