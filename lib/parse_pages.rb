@@ -2,6 +2,7 @@ require "parse_pages/version"
 require 'open-uri'
 require 'nokogiri'
 require 'rss'
+require 'koala'
 
 class Parsing
 
